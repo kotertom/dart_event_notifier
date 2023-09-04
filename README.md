@@ -1,39 +1,64 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# event_notifier
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+This is a very simple Dart package for adding observability to your objects. It
+does not have a dependency on Flutter, so can be used in Dart scripts or even
+server-side. It's a slight variation on Flutter's
+[ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html),
+[bloc](https://pub.dev/packages/bloc) et cetera.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+The gist of it is that our objects will be notifying of meaningful events that
+happen inside of them.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+See the full example in
+[example/event_notifier_example.dart](example/event_notifier_example.dart).
+
+First define the events that can occur in your objects. Sealed classes and enums
+are great for this.
 
 ```dart
-const like = 'sample';
+sealed class CounterEvent {
+  const CounterEvent();
+}
+
+final class Incremented extends CounterEvent {
+  const Incremented();
+}
+
+final class Decremented extends CounterEvent {
+  const Decremented();
+}
 ```
 
-## Additional information
+Then write your logic. Mix in the `EventNotifer` and use `notify` to post
+important events that users of your class might want to react to!
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+```dart
+class Counter with EventNotifier<CounterEvent> {
+ var _value = 0;
+ int get value => _value;
+
+ void increment() {
+   _value++;
+   notify(Incremented());
+ }
+
+ void decrement() {
+   _value--;
+   notify(Decremented());
+ }
+}
+```
+
+To receive the events, listen to the `events` stream. Simple as that.
+
+```dart
+void main() {
+  final counter = Counter();
+
+  counter.events.listen((event) {
+    print('Received event: $event; current value: ${counter.value}');
+  });
+}
+```
