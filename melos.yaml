@@ -1,4 +1,4 @@
-name: event_notifier
+name: dart_event_notifier
 
 packages:
   - .

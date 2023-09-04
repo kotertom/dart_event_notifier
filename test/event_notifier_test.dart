@@ -1,4 +1,4 @@
-import 'package:event_notifier/event_notifier.dart';
+import 'package:dart_event_notifier/dart_event_notifier.dart';
 import 'package:test/test.dart';
 
 sealed class CounterEvent {

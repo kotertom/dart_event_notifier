@@ -1,4 +1,4 @@
-name: event_notifier
+name: dart_event_notifier
 description: Make your objects observable with a very simple mixin. Pure Dart, no Flutter required.
 version: 1.0.0
 repository: https://github.com/kotertom/dart_event_notifier
