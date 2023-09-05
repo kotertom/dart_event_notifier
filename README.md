@@ -12,7 +12,7 @@ happen inside of them.
 ## Usage
 
 See the full example in
-[example/event_notifier_example.dart](example/event_notifier_example.dart).
+[example/dart_event_notifier_example.dart](example/dart_event_notifier_example.dart).
 
 First define the events that can occur in your objects. Sealed classes and enums
 are great for this.
